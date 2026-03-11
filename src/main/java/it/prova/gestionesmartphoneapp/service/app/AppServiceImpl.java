@@ -84,6 +84,7 @@ public class AppServiceImpl implements AppService {
         try {
             entityManager.getTransaction().begin();
             appDAO.setEntityManager(entityManager);
+            appDAO.unlinkAppFromSmartphone(idApp);
             appDAO.delete(idApp);
             entityManager.getTransaction().commit();
         } catch (Exception e) {

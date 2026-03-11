@@ -24,7 +24,7 @@ public class Smartphone {
     private String versioneOS;
 
     @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY )
-    @JoinTable (name = "smartphone-app", joinColumns = @JoinColumn(name = "id_smartphone", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "id_app", referencedColumnName = "id"))
+    @JoinTable (name = "smartphone_app", joinColumns = @JoinColumn(name = "id_smartphone", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "id_app", referencedColumnName = "id"))
     private Set<App> apps = new HashSet<>();
 
     public Smartphone(String marca, String modello, float prezzo, String versioneOS) {

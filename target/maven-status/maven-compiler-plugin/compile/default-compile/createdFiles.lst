@@ -1,0 +1,15 @@
+it\prova\gestionesmartphoneapp\dao\IBaseDAO.class
+it\prova\gestionesmartphoneapp\service\app\AppServiceImpl.class
+it\prova\gestionesmartphoneapp\model\App.class
+it\prova\gestionesmartphoneapp\model\Smartphone.class
+it\prova\gestionesmartphoneapp\test\TestSmApp.class
+it\prova\gestionesmartphoneapp\service\smartphone\SmartphoneService.class
+it\prova\gestionesmartphoneapp\service\app\AppService.class
+it\prova\gestionesmartphoneapp\dao\MyDaoFactory.class
+it\prova\gestionesmartphoneapp\dao\smartphone\SmartphoneDAO.class
+it\prova\gestionesmartphoneapp\dao\app\AppDAOImpl.class
+it\prova\gestionesmartphoneapp\service\MyServiceFactory.class
+it\prova\gestionesmartphoneapp\dao\app\AppDAO.class
+it\prova\gestionesmartphoneapp\dao\smartphone\SmartphoneDAOImpl.class
+it\prova\gestionesmartphoneapp\service\smartphone\SmartphoneServiceImpl.class
+it\prova\gestionesmartphoneapp\dao\EntityManagerUtil.class

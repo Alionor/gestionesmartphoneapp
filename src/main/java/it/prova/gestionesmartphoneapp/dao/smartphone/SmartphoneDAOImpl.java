@@ -1,5 +1,6 @@
 package it.prova.gestionesmartphoneapp.dao.smartphone;
 
+import it.prova.gestionesmartphoneapp.model.App;
 import it.prova.gestionesmartphoneapp.model.Smartphone;
 
 import javax.persistence.Entity;
@@ -38,6 +39,12 @@ public class SmartphoneDAOImpl implements SmartphoneDAO {
         if (id < 0) throw new Exception("Id non valido.");
         entityManager.createQuery("DELETE FROM Smartphone where id = ?1")
                 .setParameter(1, id).executeUpdate();
+    }
+
+    @Override
+    public void unlinkSmartphoneFromApp(Long idSmartphone) throws Exception {
+        if (idSmartphone < 0) throw new Exception("Id non valido.");
+        entityManager.createNativeQuery("DELETE from smarphone_app where id_smartphone = ?").setParameter(1, idSmartphone).executeUpdate();
     }
 
     @Override

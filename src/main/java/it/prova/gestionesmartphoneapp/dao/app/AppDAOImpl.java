@@ -40,6 +40,12 @@ public class AppDAOImpl implements AppDAO {
     }
 
     @Override
+    public void unlinkAppFromSmartphone(Long idApp) throws Exception {
+        if (idApp < 0) throw new Exception("Id non valido.");
+        entityManager.createNativeQuery("DELETE from smarphone_app where id_app = ?").setParameter(1, idApp).executeUpdate();
+    }
+
+    @Override
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }

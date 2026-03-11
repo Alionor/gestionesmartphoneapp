@@ -84,6 +84,7 @@ public class SmartphoneServiceImpl implements SmartphoneService {
         try {
             entityManager.getTransaction().begin();
             smartphoneDAO.setEntityManager(entityManager);
+            smartphoneDAO.unlinkSmartphoneFromApp(idSmartphone);
             smartphoneDAO.delete(idSmartphone);
             entityManager.getTransaction().commit();
         } catch (Exception e) {
