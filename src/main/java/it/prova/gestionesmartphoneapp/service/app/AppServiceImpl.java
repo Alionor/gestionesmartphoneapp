@@ -5,6 +5,7 @@ import it.prova.gestionesmartphoneapp.dao.app.AppDAO;
 import it.prova.gestionesmartphoneapp.model.App;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
 import java.util.List;
 
 public class AppServiceImpl implements AppService {
@@ -86,6 +87,25 @@ public class AppServiceImpl implements AppService {
             appDAO.setEntityManager(entityManager);
             appDAO.unlinkAppFromSmartphone(idApp);
             appDAO.delete(idApp);
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            e.printStackTrace();
+            throw e;
+        } finally {
+            EntityManagerUtil.closeEntityManager(entityManager);
+        }
+    }
+
+    @Override
+    public void aggiornaVersione(Long idApp, String nuovaVersione) throws Exception {
+        EntityManager entityManager = EntityManagerUtil.getEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            appDAO.setEntityManager(entityManager);
+            App appDaAggiornare = appDAO.findById(idApp);
+            appDaAggiornare.setVersione(nuovaVersione);
+            appDaAggiornare.setDataUltimoAggiornamento(LocalDate.now());
             entityManager.getTransaction().commit();
         } catch (Exception e) {
             entityManager.getTransaction().rollback();

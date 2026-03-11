@@ -18,4 +18,6 @@ public interface AppService {
     public void inserisciNuova(App app) throws Exception;
 
     public void rimuovi(Long idApp) throws Exception;
+
+    public void aggiornaVersione(Long idApp, String nuovaVersione) throws Exception;
 }

@@ -18,6 +18,7 @@ public class TestSmApp {
 
         try {
             testInserimentoEAggiornamentoSmartphone(smartphoneServiceInstance);
+            testInserimentoEAggiornamentoApp(appServiceInstance);
 
         } catch (Throwable e) {
             e.printStackTrace();
@@ -49,7 +50,31 @@ public class TestSmApp {
         System.out.println("FINE test inserimento e aggiornamento Smartphone - COMPLETATO CON SUCCESSO");
     }
 
+    public static void testInserimentoEAggiornamentoApp(AppService appServiceInstance) throws Exception {
+        System.out.println("Inizio test inserimento e aggiornamento APP");
 
+        List<App> listaApp = appServiceInstance.listAll();
+
+        LocalDate data1 = LocalDate.parse("2024-03-20");
+        LocalDate data2 = LocalDate.parse("2024-03-20");
+
+        App nuovaApp = new App("Zoom", data1, data2, "6.0");
+        appServiceInstance.inserisciNuova(nuovaApp);
+        if (appServiceInstance.listAll().size() != (listaApp.size() + 1))
+            throw new RuntimeException("Errore di inserimento app");
+
+        appServiceInstance.aggiornaVersione(nuovaApp.getId(), "6.1");
+        App appAggiornata = appServiceInstance.trovaPerId(nuovaApp.getId());
+        if (!appAggiornata.getVersione().equals("6.1"))
+            throw new RuntimeException("Errore di aggiornamento app");
+
+        appServiceInstance.rimuovi(nuovaApp.getId());
+
+        if(appServiceInstance.listAll().size() != listaApp.size())
+            throw new RuntimeException("Errore di eliminazione app");
+
+        System.out.println("FINE test inserimento e aggiornamento APP - COMPLETATO CON SUCCESSO");
+    }
 
 
 }
