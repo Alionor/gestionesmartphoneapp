@@ -16,7 +16,7 @@ public class MyDaoFactory {
 		return smartphoneDAOInstance;
 	}
 
-	public static AppDAO getGenereDAOInstance() {
+	public static AppDAO getAppDAOInstance() {
 		if (appDAOInstance == null)
 			appDAOInstance = new AppDAOImpl();
 
