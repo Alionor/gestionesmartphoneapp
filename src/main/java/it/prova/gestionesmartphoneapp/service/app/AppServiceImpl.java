@@ -3,6 +3,7 @@ package it.prova.gestionesmartphoneapp.service.app;
 import it.prova.gestionesmartphoneapp.dao.EntityManagerUtil;
 import it.prova.gestionesmartphoneapp.dao.app.AppDAO;
 import it.prova.gestionesmartphoneapp.model.App;
+import it.prova.gestionesmartphoneapp.model.Smartphone;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
@@ -85,7 +86,7 @@ public class AppServiceImpl implements AppService {
         try {
             entityManager.getTransaction().begin();
             appDAO.setEntityManager(entityManager);
-            appDAO.unlinkAppFromSmartphone(idApp);
+            appDAO.unlinkAppFromSmartphones(idApp);
             appDAO.delete(idApp);
             entityManager.getTransaction().commit();
         } catch (Exception e) {
@@ -106,6 +107,40 @@ public class AppServiceImpl implements AppService {
             App appDaAggiornare = appDAO.findById(idApp);
             appDaAggiornare.setVersione(nuovaVersione);
             appDaAggiornare.setDataUltimoAggiornamento(LocalDate.now());
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            e.printStackTrace();
+            throw e;
+        } finally {
+            EntityManagerUtil.closeEntityManager(entityManager);
+        }
+    }
+
+    @Override
+    public void installaAppSuSmartphone(App appTransient, Smartphone smartphoneTransient) throws Exception {
+        EntityManager entityManager = EntityManagerUtil.getEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            appDAO.setEntityManager(entityManager);
+            appDAO.installAppOnSmartphone(appTransient, smartphoneTransient);
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            e.printStackTrace();
+            throw e;
+        } finally {
+            EntityManagerUtil.closeEntityManager(entityManager);
+        }
+    }
+
+    @Override
+    public void disinstallaAppDaSmartphone(App appTransient, Smartphone smartphoneTransient) throws Exception {
+        EntityManager entityManager = EntityManagerUtil.getEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            appDAO.setEntityManager(entityManager);
+            appDAO.unlinkAppFromSmartphones(appTransient.getId());
             entityManager.getTransaction().commit();
         } catch (Exception e) {
             entityManager.getTransaction().rollback();

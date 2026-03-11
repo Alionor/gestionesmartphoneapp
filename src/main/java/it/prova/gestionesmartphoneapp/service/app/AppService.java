@@ -20,4 +20,9 @@ public interface AppService {
     public void rimuovi(Long idApp) throws Exception;
 
     public void aggiornaVersione(Long idApp, String nuovaVersione) throws Exception;
+
+    public void installaAppSuSmartphone(App appTransient, Smartphone smartphoneTransient) throws Exception;
+
+    public void disinstallaAppDaSmartphone(App appTransient, Smartphone smartphoneTransient) throws Exception;
+
 }
