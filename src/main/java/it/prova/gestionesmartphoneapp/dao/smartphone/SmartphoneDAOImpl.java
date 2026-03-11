@@ -44,7 +44,7 @@ public class SmartphoneDAOImpl implements SmartphoneDAO {
     @Override
     public void unlinkSmartphoneFromApp(Long idSmartphone) throws Exception {
         if (idSmartphone < 0) throw new Exception("Id non valido.");
-        entityManager.createNativeQuery("DELETE from smarphone_app where id_smartphone = ?").setParameter(1, idSmartphone).executeUpdate();
+        entityManager.createNativeQuery("DELETE from smartphone_app where id_smartphone = ?").setParameter(1, idSmartphone).executeUpdate();
     }
 
     @Override
