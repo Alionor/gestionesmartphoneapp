@@ -45,6 +45,20 @@ public class SmartphoneServiceImpl implements SmartphoneService {
     }
 
     @Override
+    public Smartphone trovaPerIdEager(Long idSmartphone) throws Exception {
+        EntityManager entityManager = EntityManagerUtil.getEntityManager();
+        try {
+            smartphoneDAO.setEntityManager(entityManager);
+            return smartphoneDAO.findEagerById(idSmartphone);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            EntityManagerUtil.closeEntityManager(entityManager);
+        }
+    }
+
+    @Override
     public void aggiorna(Smartphone smartphone) throws Exception {
         EntityManager entityManager = EntityManagerUtil.getEntityManager();
         try {

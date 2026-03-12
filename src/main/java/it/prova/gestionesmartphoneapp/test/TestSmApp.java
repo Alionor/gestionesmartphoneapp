@@ -20,6 +20,7 @@ public class TestSmApp {
             testInserimentoEAggiornamentoSmartphone(smartphoneServiceInstance);
             testInserimentoEAggiornamentoApp(appServiceInstance);
             testInstallaEDisinstallaApp(appServiceInstance, smartphoneServiceInstance);
+            testRimozioneCompletaDiUnoSmartphone(smartphoneServiceInstance, appServiceInstance);
 
         } catch (Throwable e) {
             e.printStackTrace();
@@ -79,6 +80,7 @@ public class TestSmApp {
         System.out.println("FINE test inserimento e aggiornamento APP - COMPLETATO CON SUCCESSO");
     }
 
+
     public static void testInstallaEDisinstallaApp(AppService appServiceInstance, SmartphoneService smartphoneServiceInstance) throws Exception {
         System.out.println("Inizio test installazione e disinstallazione APP");
 
@@ -86,16 +88,25 @@ public class TestSmApp {
         List<Smartphone> listaCellulari = smartphoneServiceInstance.listAll();
         if (listaApp == null || listaCellulari == null) throw new Exception("Non ci sono record su db.");
 
-        App appDaInstallare = listaApp.get(listaApp.size()-1);
-        Smartphone smartphonePerInstallazione = listaCellulari.get(listaCellulari.size()-1);
+        Smartphone smartphonePerInstallazione = new Smartphone("Huawei", "P50", 599.99f, "HarmonyOS");
+        smartphoneServiceInstance.inserisciNuovo(smartphonePerInstallazione);
+
+        LocalDate data1 = LocalDate.parse("2024-03-20");
+        LocalDate data2 = LocalDate.parse("2024-03-20");
+        App appDaInstallare = new App("Zoom", data1, data2, "6.0");
+        appServiceInstance.inserisciNuova(appDaInstallare);
+
+        smartphonePerInstallazione = smartphoneServiceInstance.trovaPerIdEager(smartphonePerInstallazione.getId());
+
         if (appDaInstallare == null || smartphonePerInstallazione == null)
             throw new RuntimeException("Errore di findById");
 
+        int numeroAppInstallate = smartphonePerInstallazione.getApps().size();
+
         appServiceInstance.installaAppSuSmartphone(appDaInstallare, smartphonePerInstallazione);
 
-        Smartphone smartphonePerVerifica = smartphoneServiceInstance.trovaPerId(smartphonePerInstallazione.getId());
+        Smartphone smartphonePerVerifica = smartphoneServiceInstance.trovaPerIdEager(smartphonePerInstallazione.getId());
 
-        //problema di lazy initialization
         int counter = 0;
         for (App app : smartphonePerVerifica.getApps()) {
             if (app.getId() == appDaInstallare.getId())
@@ -104,9 +115,13 @@ public class TestSmApp {
         if (counter == 0) throw new RuntimeException("Errore di installazione app");
 
         appServiceInstance.disinstallaAppDaSmartphone(appDaInstallare, smartphonePerVerifica);
+        Smartphone smartphoneAggiornato = smartphoneServiceInstance.trovaPerIdEager(smartphonePerVerifica.getId());
+        if (numeroAppInstallate != smartphoneAggiornato.getApps().size())
+            throw new RuntimeException("Errore disinstallazione app");
 
         System.out.println("FINE test installazione e disinstallazione APP - COMPLETATO CON SUCCESSO");
     }
+
 
     public static void testRimozioneCompletaDiUnoSmartphone(SmartphoneService smartphoneServiceInstance, AppService appServiceInstance) throws Exception {
         System.out.println("Inizio testRimozioneCompletaDiUnoSmartphone");
@@ -132,9 +147,9 @@ public class TestSmApp {
         appServiceInstance.installaAppSuSmartphone(nuovaApp1, nuovoCell);
         appServiceInstance.installaAppSuSmartphone(nuovaApp2, nuovoCell);
 
-        //IMPLEMENTARE UNA EAGER FINDBYID SU SMARTPHONEDAO PER POTER FETCHARE I DATI
+        Smartphone cellAggiornato = smartphoneServiceInstance.trovaPerIdEager(nuovoCell.getId());
 
-        smartphoneServiceInstance.rimuovi(nuovoCell.getId());
+        smartphoneServiceInstance.rimuovi(cellAggiornato.getId());
 
         if(smartphoneServiceInstance.listAll().size() != listaCellulari.size())
             throw new RuntimeException("Errore di eliminazione smartphone");

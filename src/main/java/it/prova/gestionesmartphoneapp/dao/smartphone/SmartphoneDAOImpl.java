@@ -23,6 +23,13 @@ public class SmartphoneDAOImpl implements SmartphoneDAO {
     }
 
     @Override
+    public Smartphone findEagerById(Long id) throws Exception {
+        if (id < 0) throw new Exception("Id non valido.");
+        return entityManager.createQuery("select s from Smartphone s left join fetch s.apps where s.id = ?1",Smartphone.class)
+                .setParameter(1, id).getSingleResult();
+    }
+
+    @Override
     public void update(Smartphone smartphone) throws Exception {
         if (smartphone == null) throw new Exception("Oggetto inserito non valido.");
         entityManager.merge(smartphone);

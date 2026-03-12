@@ -20,4 +20,6 @@ public interface SmartphoneService {
 
     public void rimuovi(Long idSmartphone) throws Exception;
 
+    public Smartphone trovaPerIdEager(Long idSmartphone) throws Exception;
+
 }

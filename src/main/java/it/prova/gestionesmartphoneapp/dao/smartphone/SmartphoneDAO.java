@@ -7,4 +7,6 @@ public interface SmartphoneDAO extends IBaseDAO<Smartphone> {
 
     public void unlinkSmartphoneFromApp(Long idSmartphone) throws Exception;
 
+    public Smartphone findEagerById(Long id) throws Exception;
+
 }
